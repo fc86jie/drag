@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      #box {
+        width: 100px;
+        height: 100px;
+        background-color: aqua;
+        position: absolute;
+        left: 50px;
+        top: 50px;
+      }
+    </style>
+    <div id="box"></div>
+    <script>
+      let box = document.querySelector("#box");
+      let oldX = 0,
+        oldY = 0,
+        ox = 0,
+        oy = 0,
+        isDrag = true;
+
+      box.ontouchstart = function (ev) {
+        let touch = ev.changedTouches[0];
+        oldX = touch.pageX;
+        oldY = touch.pageY;
+        isDrag = true;
+      };
+
+      box.ontouchmove = function (ev) {
+        let touch = ev.changedTouches[0];
+
+        // 每次拖拽的距离
+        let nowX = touch.pageX - oldX;
+        let nowY = touch.pageY - oldY;
+        let transformStr = box.style.transform;
+
+        if (transformStr && isDrag) {
+          // 记录每次开始拖拽的时的transform
+          let reg = /translate\((-?\d+\.\d+)px, (-?\d+\.\d+)px\)/gi;
+          let res = reg.exec(transformStr);
+          ox = parseFloat(res[1]);
+          oy = parseFloat(res[2]);
+          isDrag = false;
+        }
+
+        // transform是相对于初次拖拽的计算，每次需要加上上一次的transform
+        box.style.transform = `translate(${nowX + ox}px,${nowY + oy}px)`;
+        ev.preventDefault();
+      };
+    </script>
+  </head>
+  <body></body>
+</html>
