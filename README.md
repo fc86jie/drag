@@ -1,1 +1,3 @@
-# drag
+# drag 移动端使用transfrom完成拖拽
+
+- 通过设置transform属性完成拖拽，需要在每次手指按住元素时计算前一次transform的属性值。在拖拽过程中通过拖动距离加上上次次的transform距离 
